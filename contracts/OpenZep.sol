@@ -367,6 +367,27 @@ contract ERC165 is IERC165 {
     }
 }
 
+
+contract Owned {
+    address owner;
+
+    constructor () public {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner() {
+        require(msg.sender == owner);
+        _;
+    }
+}
+contract Whitelist is Owned {
+    mapping (address => bool) userAddr;
+
+    function whitelistAddress (address user) public onlyOwner {
+        userAddr[user] = true;
+    }
+}
+
 contract ERC721 is Context, ERC165, IERC721 {
     using SafeMath for uint256;
     using Address for address;
